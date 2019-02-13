@@ -17,7 +17,7 @@ class MembersPage < Scraped::HTML
   decorator WikidataIdsDecorator::Links
 
   field :members do
-    (constituency_members + national_members).each do |mem|
+    (constituency_members + national_members).reject { |mem| mem[:name].to_s.empty? }.each do |mem|
       mem[:party_id] = parties.find(->() {{}}) { |party| party[:name] == mem[:party] }[:id]
     end
   end
